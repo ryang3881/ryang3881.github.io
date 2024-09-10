@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Results</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Results</h1>
+
+        <!-- Overview Section -->
+        <div class="text-section">
+            <h2>Overview</h2>
+            <p>This project reconstructs historical photographs by aligning color channels from early 20th-century images. The images have exposures with three color channels: red, green, and blue. The reconstruction process involves computing the displacement between channels and aligning them to create full-color images.</p>
+        </div>
+
+        <!-- Approach Section -->
+        <div class="text-section">
+            <h2>Approach</h2>
+            <p>First, the red, blue, and green plates are isolated from the image. Then, a window of [-15, 15] is used to try various displacements and find the one that results in the smallest Euclidean distance. I crop 5% from each side of the image in order to reduce noise from the borders. I do this for both green and red and align them to blue. This works well for small jpgs that are relatively small and can afford to search this window size.</p>
+            <p><br></p>
+            <p>However, for the larger .tif images, they are too large to attempt this same method. Thus, an image pyramid is used in order to gradually scale the image down by a factor of 0.5 repeatedly until the image reaches a similar size to the first example jpg I used. (I checked this by ensuring max[height, width] was less than 400 pixels). Then, a similar approach with the window search range of [-15, 15] is used for the smallest scale image in order to find the optimal displacement for red and green. These displacements are then reused and scaled up for each image respectively, with small searches in windows of size [-4, 4] in order to account for extra pixels that form when rescaling back up. Finally, at the end 5% from each edge is cropped to eliminate most of the noisy borders. For the most part, this aligned most images well, with only the Emir image being slightly misaligned. </p>
+            <p><br></p>
+            <p>A problem I had was that there would be instances in which there was slight misalignment at the end. I addressed this by increasing the search window on the later levels from [-1, 1] to [-4, 4]. Again, the Emir wasn't aligned perfectly, but this could be due to the fact that the alignment was on the blue channel, but the image also has a lot of blue and little green, which could explain the green plate being slightly out of place still.</p>
+
+        </div>
+        
+        <!-- Low-Quality Images Section -->
+        <div class="image-section">
+            <h2>Low-Quality Images (jpg)</h2>
+            <div class="image-grid">
+                <div class="image-card">
+                    <img src="./media/euclidean_cathedral.jpg" alt="Low Quality Image 1">
+                    <p>Colored image of a cathedral.<br>
+                    Displacement: R (2, 5); G (3, 12).</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/euclidean_monastery.jpg" alt="Low Quality Image 2">
+                    <p>Colored image of a monastery.<br>
+                    Displacement: R (2, -3); G (2, 3).</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/euclidean_tobolsk.jpg" alt="Low Quality Image 3">
+                    <p>Colored image of Tobolsk.<br>
+                    Displacement: R (2, 3); G (3, 6).</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- High-Quality Images Section -->
+        <div class="image-section">
+            <h2>High-Quality Images (tiff)</h2>
+            <div class="image-grid">
+                <div class="image-card">
+                    <img src="./media/euclidean_church.jpg" alt="High Quality Image 1">
+                    <p>Colored image of a church.<br>
+                    Displacement: R (3, 25); G (-5, 58).</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/euclidean_emir.jpg" alt="High Quality Image 2">
+                    <p>Colored image of the Emir.<br>
+                    Displacement: R (24, 49); G (43, 88).</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/euclidean_harvesters.jpg" alt="High Quality Image 3">
+                    <p>Colored image of harvesters.<br>
+                    Displacement: R (15, 60); G (13, 124).</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/euclidean_icon.jpg" alt="High Quality Image 1">
+                    <p>Colored image of an icon.<br>
+                    Displacement: R (17, 41); G (23, 89).</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/euclidean_lady.jpg" alt="High Quality Image 2">
+                    <p>Colored image of a lady.<br>
+                    Displacement: R (8, 55); G (12, 111).</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/euclidean_melons.jpg" alt="High Quality Image 3">
+                    <p>Colored image of melons.<br>
+                    Displacement: R (9, 82); G (11, 177).</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/euclidean_onion_church.jpg" alt="High Quality Image 1">
+                    <p>Colored image of an onion-shaped church.<br>
+                    Displacement: R (26, 51); G (36, 108).</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/euclidean_sculpture.jpg" alt="High Quality Image 2">
+                    <p>Colored image of a sculpture.<br>
+                    Displacement: R (-11, 33); G (-27, 140).</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/euclidean_self_portrait.jpg" alt="High Quality Image 2">
+                    <p>Colored self-portrait.<br>
+                    Displacement: R (29, 79); G (34, 175).</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/euclidean_three_generations.jpg" alt="High Quality Image 3">
+                    <p>Colored image of three generations of people.<br>
+                    Displacement: R (13, 55); G (10, 112).</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/euclidean_train.jpg" alt="High Quality Image 1">
+                    <p>Colored image of a train.<br>
+                    Displacement: R (6, 42); G (32, 87).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Selected Images Section -->
+        <div class="image-section">
+            <h2>Selected Images (tiff)</h2>
+            <div class="image-grid">
+                <div class="image-card">
+                    <img src="./media/euclidean_bell.jpg" alt="High Quality Image 1">
+                    <p>Colored image of a bell.<br>
+                    Displacement: R (3, 25); G (-5, 58).</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/euclidean_canal.jpg" alt="High Quality Image 2">
+                    <p>Colored image of a canal.<br>
+                    Displacement: R (24, 49); G (43, 88).</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/euclidean_cottage.jpg" alt="High Quality Image 3">
+                    <p>Colored image of a cottage.<br>
+                    Displacement: R (15, 60); G (13, 124).</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/euclidean_flowers.jpg" alt="High Quality Image 1">
+                    <p>Colored image of a flowers.<br>
+                    Displacement: R (17, 41); G (23, 89).</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/euclidean_gothic.jpg" alt="High Quality Image 2">
+                    <p>Colored image of a gothic church.<br>
+                    Displacement: R (8, 55); G (12, 111).</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/euclidean_river.jpg" alt="High Quality Image 3">
+                    <p>Colored image of a river.<br>
+                    Displacement: R (9, 82); G (11, 177).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bells & Whistles Section -->
+        <div class="text-section">
+            <h2>Bells & Whistles</h2>
+            <p>For my bells & whistles, I implemented Sobel edge detection in order to perfectly align the Emir image that was failing before. I approached it by applying Gaussian Blur in order to reduce noise and smoothen the image. This is important because derivatives are important in edge detection and they are especially sensitive to this. Then the convolution with the Sobel operator derivative masks for edge detection will be less sensitive to noise. Then, the gradient magnitude of the X and Y directions normalized is used as the metric for comparison. This fully aligned the Emir successfully, in combination with a later layer search window of [-2, 2] to account for extra pixels when scaling up. I imported Gaussian Blur and Convolution operations to make life a bit easier. This ultimately resulted in better alignment, but the runtime increased to just under an minute per .tif image.</p>
+        </div>
+
+        <!-- Emir Fixed Section -->
+        <div class="image-section">
+            <h2>Before and After Sobel (Emir)</h2>
+            <div class="doubleimage-grid">
+                <div class="doubleimage-card">
+                    <img src="./media/euclidean_emir.jpg" alt="High Quality Image 1">
+                    <p>Colored image of the Emir with Euclidean distance.<br>
+                    Displacement: R (24, 49); G (43, 88).</p>
+                </div>
+                <div class="doubleimage-card">
+                    <img src="./media/sobel_emir.jpg" alt="High Quality Image 2">
+                    <p>Colored image of the Emir with Sobel edge detection.<br>
+                    Displacement: R (23, 49); G (40, 106).</p>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

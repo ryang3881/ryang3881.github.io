@@ -24,7 +24,7 @@ h1 {
     margin-bottom: 30px;
 }
 
-.image-section {
+.text-section, .image-section {
     margin-bottom: 40px;
 }
 
@@ -55,6 +55,29 @@ h1 {
 .image-card p {
     font-size: 14px;
     color: #555;
+}
+
+.doubleimage-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.doubleimage-card {
+    width: 45%; /* Adjust this to increase the size of each image */
+    background-color: #fafafa;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.doubleimage-card img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #ccc;
 }
 
 h2 {
