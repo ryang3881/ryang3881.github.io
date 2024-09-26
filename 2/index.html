@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Results</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Results</h1>
+
+        <!-- Part1 Section -->
+        <div class="text-section">
+            <h2>Part 1.1: Finite Difference Operator</h2>
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+                });
+                </script>
+                <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML-full"></script>
+                
+                <p>We use the finite difference as our filter for the x and y directions:</p>
+                <p>$$ D_x = \begin{bmatrix} -1 & 1 \end{bmatrix}, \quad D_y = \begin{bmatrix} -1 \\ 1 \end{bmatrix} $$</p>
+                
+                <p>Then we convolve the image by filters with respect to x and y, and calculate the gradient magnitude like so:</p>
+                <p>$$ G_x = Im * D_x, \quad G_y = Im * D_y, \quad G_m = \sqrt{G_x^2 + G_y^2} $$</p>
+            
+            <h2>Part 1.2: Derivative of Gaussian Filter</h2>
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+                });
+                </script>
+                <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML-full"></script>
+                
+                <p>Given the previous approach was clearly noisy, we can apply Gaussian blur to try to reduce noise, where G is the 2D Gaussian filter.
+                    I notice that the one that has been blurred prior has darker edges and less noise, such as from the grass. The edges are also a bit rounder.
+                    A similar effect can be achieved by taking the derivative of the gaussian filters and then convolving with the difference filters to achieve the same effect with a single convolution.
+                </p>
+            
+            <div class="image-grid">
+                <div class="image-card">
+                    <img src="./media/cameraman.png" alt="Low Quality Image 1">
+                    <p>Original</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/cameraman-grad.jpg" alt="Low Quality Image 2">
+                    <p>Binarized Gradient Magnitude</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/cameraman-DoG.jpg" alt="Low Quality Image 3">
+                    <p>Derivative of Gaussian to Reduce Noise</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Part2 Section -->
+        <div class="text-section">
+            <h2>Part 2.1: Sharpening</h2>
+            <div class="image-grid">
+                <div class="image-card">
+                    <img src="./media/taj.jpg" alt="Low Quality Image 1">
+                    <p>Original</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/taj-alpha-0.25.jpg" alt="Low Quality Image 2">
+                    <p>alpha = 0.25</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/taj-alpha-0.5.jpg" alt="Low Quality Image 3">
+                    <p>alpha = 0.5</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/taj-alpha-1.jpg" alt="Low Quality Image 1">
+                    <p>alpha = 1</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/taj-alpha-2.jpg" alt="Low Quality Image 2">
+                    <p>alpha = 2</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/taj-alpha-4.jpg" alt="Low Quality Image 3">
+                    <p>alpha = 4</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/auto-alpha-0.5.jpg" alt="Low Quality Image 1">
+                    <p>alpha = 0.5</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/auto-alpha-1.jpg" alt="Low Quality Image 2">
+                    <p>alpha = 1</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/auto-alpha-2.jpg" alt="Low Quality Image 3">
+                    <p>alpha = 2</p>
+                </div>
+            </div>
+            <p>Additionally, I tried to sharpen a blurred image. It is clear that the blurred image when sharpened is not as clear as the original, as it has a lot more noise and artifacting. This is because blurring loses information.</p>
+            <div class="image-grid">
+                <div class="image-card">
+                    <img src="./media/triple_auto.jpg" alt="Low Quality Image 1">
+                    <p>Original</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/blurred-auto.jpg" alt="Low Quality Image 2">
+                    <p>Blurred</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/blur-then-sharp.jpg" alt="Low Quality Image 3">
+                    <p>Blurred then Sharpened with alpha = 4</p>
+                </div>
+            </div>
+            <h2>Part 2.2: Hybrid Images</h2>
+            <div class="image-grid">
+                <div class="image-card">
+                    <img src="./media/DerekAligned.jpg" alt="Low Quality Image 1">
+                    <p>Derek Low Frequency</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/NutmegAligned.jpg" alt="Low Quality Image 2">
+                    <p>Nutmeg High Frequency</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/derek-nutmeg.jpg" alt="Low Quality Image 3">
+                    <p>Hybrid</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/original-derek-freq.jpg" alt="Low Quality Image 1">
+                    <p>Derek Original Fourier Transform</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/filtered-derek-freq.jpg" alt="Low Quality Image 2">
+                    <p>Derek Filtered Fourier Transform</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/original-nutmeg-freq.jpg" alt="Low Quality Image 3">
+                    <p>Nutmeg Original Fourier Transform</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/filtered-nutmeg-freq.jpg" alt="Low Quality Image 1">
+                    <p>Nutmeg Filtered Fourier Transform</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/hybrid-freq.jpg" alt="Low Quality Image 2">
+                    <p>Hybrid Fourier Transform</p>
+                </div>
+            </div>
+            <div class="image-grid">
+                <div class="image-card">
+                    <img src="./media/sprite.webp" alt="Low Quality Image 1">
+                    <p>Sprite Low Frequency</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/coke.jpg" alt="Low Quality Image 2">
+                    <p>Coke High Frequency</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/sprite-coke.jpg" alt="Low Quality Image 3">
+                    <p>Hybrid</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/richard.jpg" alt="Low Quality Image 1">
+                    <p>Richard Low Frequency</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/lebron.jpeg" alt="Low Quality Image 2">
+                    <p>Lebron High Frequency</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/richard-lebron.jpg" alt="Low Quality Image 3">
+                    <p>Hybrid</p>
+                </div>
+                <p>I think the hybrid of Lebron and I was a failure because our faces are opposites in a way. I have a lot of hair while Lebron is balding, and Lebron has a lot of facial hair whereas I have none. Thus, it is difficult to make a convincing hybrid image.</p>
+            </div>
+            <h2>Part 2.3: Multiresolution Blending</h2>
+            <div class="image-grid">
+                <div class="image-card">
+                    <img src="./media/apple-0.jpg" alt="Low Quality Image 1">
+                    <p>Apple Laplacian Stack 0</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/apple-1.jpg" alt="Low Quality Image 2">
+                    <p>Apple Laplacian Stack 1</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/apple-2.jpg" alt="Low Quality Image 3">
+                    <p>Apple Laplacian Stack 2</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/apple-3.jpg" alt="Low Quality Image 1">
+                    <p>Apple Laplacian Stack 3</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/apple-4.jpg" alt="Low Quality Image 2">
+                    <p>Apple Laplacian Stack 4</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/apple-5.jpg" alt="Low Quality Image 3">
+                    <p>Apple Laplacian Stack 5</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/orange-0.jpg" alt="Low Quality Image 1">
+                    <p>Orange Laplacian Stack 0</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/orange-1.jpg" alt="Low Quality Image 2">
+                    <p>Orange Laplacian Stack 1</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/orange-2.jpg" alt="Low Quality Image 3">
+                    <p>Orange Laplacian Stack 2</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/orange-3.jpg" alt="Low Quality Image 1">
+                    <p>Orange Laplacian Stack 3</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/orange-4.jpg" alt="Low Quality Image 2">
+                    <p>Orange Laplacian Stack 4</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/orange-5.jpg" alt="Low Quality Image 3">
+                    <p>Orange Laplacian Stack 5</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/my_oraple.jpg" alt="Low Quality Image 3">
+                    <p>My Merged Oraple</p>
+                </div>
+            </div>
+            <div class="image-grid">
+                <div class="image-card">
+                    <img src="./media/apple-1-mask.jpg" alt="Low Quality Image 1">
+                    <p>Laplacian Mask Level 1</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/apple-3-mask.jpg" alt="Low Quality Image 2">
+                    <p>Laplacian Mask Level 3</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/apple-5-mask.jpg" alt="Low Quality Image 3">
+                    <p>Laplacian Mask Level 5</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/orange-1-mask.jpg" alt="Low Quality Image 1">
+                    <p>Laplacian Mask Level 1</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/orange-3-mask.jpg" alt="Low Quality Image 2">
+                    <p>Laplacian Mask Level 3</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/orange-5-mask.jpg" alt="Low Quality Image 3">
+                    <p>Laplacian Mask Level 5</p>
+                </div>
+            </div>
+            <div class="image-grid">
+                <div class="image-card">
+                    <img src="./media/mojave-day.jpg" alt="Low Quality Image 1">
+                    <p>Day</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/mojave-night.jpg" alt="Low Quality Image 2">
+                    <p>Night</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/day-and-night.jpg" alt="Low Quality Image 3">
+                    <p>Blended</p>
+                </div>
+            </div>
+            <div class="image-grid">
+                <div class="image-card">
+                    <img src="./media/day-1-mask.jpg" alt="Low Quality Image 1">
+                    <p>Laplacian Mask Level 1</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/day-3-mask.jpg" alt="Low Quality Image 2">
+                    <p>Laplacian Mask Level 3</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/day-5-mask.jpg" alt="Low Quality Image 3">
+                    <p>Laplacian Mask Level 5</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/night-1-mask.jpg" alt="Low Quality Image 1">
+                    <p>Laplacian Mask Level 1</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/night-3-mask.jpg" alt="Low Quality Image 2">
+                    <p>Laplacian Mask Level 3</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/night-5-mask.jpg" alt="Low Quality Image 3">
+                    <p>Laplacian Mask Level 5</p>
+                </div>
+            </div>
+            <div class="image-grid">
+                <div class="image-card">
+                    <img src="./media/angela-aligned.jpg" alt="Low Quality Image 1">
+                    <p>My Sister</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/racket-aligned.jpg" alt="Low Quality Image 2">
+                    <p>Racket</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/angela_racket.jpg" alt="Low Quality Image 3">
+                    <p>Blended</p>
+                </div>
+            </div>
+            <p>I used a vertical binary mask similar to the oraple for the desert day and night blending, with the only difference being the dimensions which were modified to match the image. For the blend with my sister and the tennis racket, an irregular ellipse-shaped mask was used.</p>
+        </div>
+
+        <!-- Bells & Whistles Section -->
+        <div class="text-section">
+            <h2>Bells & Whistles</h2>
+            <p>For my bells & whistles, I implemented color for every aspect in at least one image. I found that for the hybrid images, color in both images worked best, and I did this for the Derek-Nutmeg hybrid. I also blended with color, and I think color is instrumental to good blending because it makes the effect that much more powerful.</p>
+        </div>
+
+        <div class="text-section">
+            <h2>Most Important Thing I Learned</h2>
+            <p>In this project, I think the most important thing I learned is how operations can be combined to use only one convolution operation, which can be very useful. An example of this was the unsharp mask filter instead of subtracting a blurred image to isolate high frequencies, and then adding them.</p>
+        </div>
+</body>
+</html>
