@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Results</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Results</h1>
+
+        <!-- Part1 Section -->
+        <div class="text-section">
+            <h2>Part 1: Defining Correspondences Operator</h2>                
+                <p>First, I needed to align the two images I wanted to morph, and I did this by reusing given code from the previous project. Then I removed the backgrounds with a outside photo-editing tool. I then selected correspondence points between my face and the picture of Lebron I'm using. I did this using the student-made tool <a href="https://cal-cs180.github.io/fa23/hw/proj3/tool.html" target="_blank">found here.</a></p>
+                <p>Then, I computed the point-wise mean of the two point sets, and then computed the Delaunay triangulation of the midway shape using scipy.spatial.Delaunay.</p>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/richard-morph.png" alt="High Quality Image 1">
+                        <p>Original</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/richard-triangles.jpg" alt="High Quality Image 2">
+                        <p>Triangulation with Correspondence Points</p>
+                    </div>
+                </div>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/lebron-morph.png" alt="High Quality Image 1">
+                        <p>Original</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/lebron-triangles.jpg" alt="High Quality Image 2">
+                        <p>Triangulation with Correspondence Points</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Part2 Section -->
+        <div class="text-section">
+            <h2>Part 2: Computing the "Mid-way Face"</h2>
+                <p>Then, to find the affine matrix A, I essentially solved a system of equations using np.linalg.lstsq in my computeAffine(tri1, tri2) function. The a, b, c, d, e, f values were then used with a row of [0, 0, 1] to create the transformation matrix T with homogenous coordinates.
+                </p>
+                <p>The inverse warp function was then created by generating a mask using polygon. I also used a RegularGridInterpolator in order to interpolate color from neighbors in the case of a pixel coming from "between pixels."
+                </p>
+                <div class="image-grid">
+                    <div class="image-card">
+                        <img src="./media/richard-morph.png" alt="Low Quality Image 1">
+                        <p>Richard</p>
+                    </div>
+                    <div class="image-card">
+                        <img src="./media/lebron-morph.png" alt="Low Quality Image 2">
+                        <p>LeBron</p>
+                    </div>
+                    <div class="image-card">
+                        <img src="./media/richard-lebron-mid.jpg" alt="Low Quality Image 3">
+                        <p>Mid</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-section">
+            <h2>Part 3: The Morph Sequence</h2>
+                <p>The morph is similar, except my mean points is recomputed at each step of iteration using the warp_fraction weight to adjust the shape transformation, and the dissolve_fraction to control the values blending.
+                </p>
+                <p>I iterated over 0-1 at 45 even steps in order to create the gif transition frames, and create the gif. The transition can be seen below:
+                </p>
+                <div class="image-grid">
+                    <div class="image-card">
+                        <img src="./media/richard-morph.png" alt="Low Quality Image 1">
+                        <p>Richard</p>
+                    </div>
+                    <div class="image-card">
+                        <img src="./media/lebron-morph.png" alt="Low Quality Image 2">
+                        <p>LeBron</p>
+                    </div>
+                    <div class="image-card">
+                        <img src="./media/richard-lebron-morph.gif" alt="Low Quality Image 3">
+                        <p>Transition</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-section">
+            <h2>Part 4: The "Mean face" of a population</h2>
+                <p>I computed the average face of the Danes, which was a bit tricky because I needed to create a special parser in order to identify the correspondence points of each face. With this info, I averaged the position of all of the correspondence points for each image and then morphed each face into the average face points. I then computed the mean of all of these faces to compute the "average" face.
+                </p>
+                <div class="image-grid">
+                    <div class="image-card">
+                        <img src="./media/36-2m.jpg" alt="Low Quality Image 1">
+                        <p>Example Face 1</p>
+                    </div>
+                    <div class="image-card">
+                        <img src="./media/38-5m.jpg" alt="Low Quality Image 2">
+                        <p>Example Face 2</p>
+                    </div>
+                    <div class="image-card">
+                        <img src="./media/average.jpg" alt="Low Quality Image 3">
+                        <p>Average Face</p>
+                    </div>
+                </div>
+                <p>Here are some examples of people in the dataset with their face morphed to the average shape.
+                </p>
+                <div class="image-grid">
+                    <div class="image-card">
+                        <img src="./media/22-2f-morph-avg.gif" alt="Low Quality Image 1">
+                        <p>Morph 1</p>
+                    </div>
+                    <div class="image-card">
+                        <img src="./media/30-2f-morph-avg.gif" alt="Low Quality Image 2">
+                        <p>Morph 2</p>
+                    </div>
+                    <div class="image-card">
+                        <img src="./media/35-1f-morph-avg.gif" alt="Low Quality Image 3">
+                        <p>Morph 3</p>
+                    </div>
+                </div>
+                <p>I also have examples of my face being morphed into the average face shape, and the average face being morphed into my face shape.
+                </p>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/richard-aligned-avg.jpg" alt="High Quality Image 1">
+                        <p>Before</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/average.jpg" alt="High Quality Image 2">
+                        <p>Before</p>
+                    </div>
+                </div>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/richard-avg-shape.jpg" alt="High Quality Image 1">
+                        <p>Richard to Average Dane Shape</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/avg-dane-richard-shape.jpg" alt="High Quality Image 2">
+                        <p>Average Dane to Richard Shape</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-section">
+        <h2>Part 5. Caricatures: Extrapolating from the mean</h2>
+            <p>I extrapolated from the Danish population mean in order to create a caricature of my face, and tried it with alphas 1 and -0.7.
+            </p>
+            <div class="doubleimage-grid">
+                <div class="doubleimage-card">
+                    <img src="./media/caricature-0.7.jpg" alt="High Quality Image 1">
+                    <p>Caricature alpha = -0.7</p>
+                </div>
+                <div class="doubleimage-card">
+                    <img src="./media/caricature1.jpg" alt="High Quality Image 2">
+                    <p>Caricature alpha = 1</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bells & Whistles Section -->
+        <div class="text-section">
+            <h2>Bells & Whistles</h2>
+            <p>For my bells & whistles, I focused on changing my ethnicity to the average Dane similar to the previous part, but with more adjustments including shape, appearance, and both.</p>
+            <div class="image-grid">
+                <div class="image-card">
+                    <img src="./media/avg-dane-richard-appearance.jpg" alt="Low Quality Image 1">
+                    <p>Changing Only Appearance</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/avg-dane-richard-shape.jpg" alt="Low Quality Image 2">
+                    <p>Changing Only Shape</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/richard-dane-both.jpg" alt="Low Quality Image 3">
+                    <p>Changing Both</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
