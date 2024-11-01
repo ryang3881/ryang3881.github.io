@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Results</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Project 4 Results</h1>
+
+        <!-- Part1 Section -->
+        <div class="text-section">
+            <h2>Starter Images</h2>                
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/rsf1.jpg" alt="High Quality Image 1">
+                        <p>RSF View 1</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/rsf2.jpg" alt="High Quality Image 2">
+                        <p>RSF View 2</p>
+                    </div>
+                </div>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/wall1.jpg" alt="High Quality Image 1">
+                        <p>Wall View 1</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/wall2.jpg" alt="High Quality Image 2">
+                        <p>Wall View 2</p>
+                    </div>
+                </div>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/vlsb1.jpeg" alt="High Quality Image 1">
+                        <p>VLSB View 1</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/vlsb2.jpeg" alt="High Quality Image 2">
+                        <p>VLSB View 2</p>
+                    </div>
+                </div>
+            <h2>Recovering Homographies</h2>  
+                <head>
+                    <title>Projective Transformation Recovery</title>
+                    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+                    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+                </head>
+                    <p>
+                        First, we need to find the parameters of the homography transformation, given by:
+                    </p>
+                
+                    <p>
+                        $$\mathbf{p'} = H\mathbf{p}$$
+                    </p>
+                
+                    <p>
+                        Here, \(H\) represents a 3 x 3 matrix containing 8 unknowns where the bottom right is a scale factor of 1, while \(\mathbf{p}\) and \(\mathbf{p'}\) denote the homogeneous coordinates of corresponding points in the source and target images.
+                    </p>
+                    <p>Our goal is to determine a projective transformation that satisfies:</p>
+                
+                    <p>
+                        $$\begin{bmatrix} 
+                        a & b & c \\
+                        d & e & f \\
+                        g & h & 1
+                        \end{bmatrix}
+                        \begin{bmatrix}
+                        x \\ y \\ 1
+                        \end{bmatrix} = 
+                        \begin{bmatrix}
+                        wx' \\ wy' \\ w
+                        \end{bmatrix}$$
+                    </p>
+                
+                    <p>Expanding and substitution yields the following:</p>
+                
+                    <p>
+                        $$\begin{cases}
+                        ax + by + c = wx' \\
+                        dx + ey + f = wy' \\
+                        gx + hy + 1 = w
+                        \end{cases}$$
+                    </p>
+                
+                    <p>
+                        $$\begin{cases}
+                        ax + by + c = (gx + hy + 1)x' \\
+                        dx + ey + f = (gx + hy + 1)y'
+                        \end{cases}$$
+                    </p>
+                
+                
+                    <p>
+                        $$\implies \begin{bmatrix}
+                        x & y & 1 & 0 & 0 & 0 & -xx' & -yx' \\
+                        0 & 0 & 0 & x & y & 1 & -xy' & -yy'
+                        \end{bmatrix}
+                        \begin{bmatrix}
+                        a \\ b \\ c \\ d \\ e \\ f \\ g \\ h
+                        \end{bmatrix} =
+                        \begin{bmatrix}
+                        x' \\ y'
+                        \end{bmatrix}$$
+                    </p>
+                
+                    <p>
+                        With n=4 correspondences, the system can be solved standardly, but the homography will be more unstable and noisy, as will be shown below.
+                        With more correspondences, we have an overdetermined system and can solve using least squares by combining multiple correspondence points into an expanded matrix and vector form.
+                    </p>
+                    <h2>Rectification</h2>
+                    <p>
+                        For rectification, I selected 4 points corresponding with what should be a square at various angles, and then warped using a homography associated with a scaled square based on the size of the image as the im2_pts. 
+
+                    </p>
+                    <div class="image-grid">
+                        <div class="image-card">
+                            <img src="./media/square.jpg" alt="Low Quality Image 1">
+                            <p>Angled Square</p>
+                        </div>
+                        <div class="image-card">
+                            <img src="./media/square_pts.jpg" alt="Low Quality Image 2">
+                            <p>Selected Points</p>
+                        </div>
+                        <div class="image-card">
+                            <img src="./media/rectified_square.jpg" alt="Low Quality Image 3">
+                            <p>Rectified</p>
+                        </div>
+                    </div>
+                    <div class="image-grid">
+                        <div class="image-card">
+                            <img src="./media/rsf1.jpg" alt="Low Quality Image 1">
+                            <p>Angled RSF</p>
+                        </div>
+                        <div class="image-card">
+                            <img src="./media/rsf_pts.jpg" alt="Low Quality Image 2">
+                            <p>Selected Points</p>
+                        </div>
+                        <div class="image-card">
+                            <img src="./media/rectified_rsf.jpg" alt="Low Quality Image 3">
+                            <p>Rectified</p>
+                        </div>
+                    </div>
+                    <p>
+                        I think part of the reason the output is not a perfect square as it probably should be is due to a variety of reasons. The main one is as mentioned before, with 4 points and manual selection there is a lot of noise in the results. Additionally, the photo of the RSF was taken at a sharp angle and object to rectify may not be a perfect square, all of which could be contributing factors for the rectification result not being a perfect square.
+                    </p>
+            <h2>Mosiac</h2>
+                <p>
+                    For creating mosaics, I warped one image into the other's projection. I computed a low-pass and high-pass filter of the image and blended each. The high-pass was blended by comparing the distance transform in each image, and for low-pass it was blended with a weighted average with the distance transforms. Results are shown below:
+                </p>
+                <div class="image-grid">
+                    <div class="image-card">
+                        <img src="./media/rsf1.jpg" alt="Low Quality Image 1">
+                        <p>RSF View 1</p>
+                    </div>
+                    <div class="image-card">
+                        <img src="./media/rsf2.jpg" alt="Low Quality Image 2">
+                        <p>RSF View 2</p>
+                    </div>
+                    <div class="image-card">
+                        <img src="./media/rsf_mosaic.jpg" alt="Low Quality Image 3">
+                        <p>RSF Mosaic</p>
+                    </div>
+                </div>
+                <div class="image-grid">
+                    <div class="image-card">
+                        <img src="./media/wall1.jpg" alt="Low Quality Image 1">
+                        <p>Wall View 1</p>
+                    </div>
+                    <div class="image-card">
+                        <img src="./media/wall2.jpg" alt="Low Quality Image 2">
+                        <p>Wall View 2</p>
+                    </div>
+                    <div class="image-card">
+                        <img src="./media/wall_mosaic.jpg" alt="Low Quality Image 3">
+                        <p>Wall Mosaic</p>
+                    </div>
+                </div>
+                <div class="image-grid">
+                    <div class="image-card">
+                        <img src="./media/vlsb1.jpeg" alt="Low Quality Image 1">
+                        <p>VLSB View 1</p>
+                    </div>
+                    <div class="image-card">
+                        <img src="./media/vlsb2.jpeg" alt="Low Quality Image 2">
+                        <p>VLSB View 2</p>
+                    </div>
+                    <div class="image-card">
+                        <img src="./media/vlsb_mosaic.jpg" alt="Low Quality Image 3">
+                        <p>VLSB Mosaic</p>
+                    </div>
+                </div>
+            <h2>Detecting Harris Corners</h2>            
+                <p>
+                    Using the provided sample code:
+                </p>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/rsf1.jpg" alt="High Quality Image 1">
+                        <p>RSF View 1</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/harris_rsf1.jpg" alt="High Quality Image 2">
+                        <p>Harris Corners</p>
+                    </div>
+                </div>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/rsf2.jpg" alt="High Quality Image 1">
+                        <p>RSF View 2</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/harris_rsf2.jpg" alt="High Quality Image 2">
+                        <p>Harris Corners</p>
+                    </div>
+                </div>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/vlsb1.jpeg" alt="High Quality Image 1">
+                        <p>VLSB View 1</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/harris_vlsb1.jpg" alt="High Quality Image 2">
+                        <p>Harris Corners</p>
+                    </div>
+                </div>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/vlsb2.jpeg" alt="High Quality Image 1">
+                        <p>VLSB View 2</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/harris_vlsb2.jpg" alt="High Quality Image 2">
+                        <p>Harris Corners</p>
+                    </div>
+                </div>
+            <h2>Adaptive Non-Maximal Suppression (ANMS)</h2>
+                <p>
+                    Because Harris points are very clustered, we can run ANMS to select corner points that are more spread out, I use k=500 points here. Harris is on the left, ANMS on the right.
+                </p>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/harris_rsf1.jpg" alt="High Quality Image 1">
+                        <p>Harris</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/anms_rsf1.jpg" alt="High Quality Image 2">
+                        <p>ANMS</p>
+                    </div>
+                </div>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/harris_rsf2.jpg" alt="High Quality Image 1">
+                        <p>Harris</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/anms_rsf2.jpg" alt="High Quality Image 2">
+                        <p>ANMS</p>
+                    </div>
+                </div>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/harris_vlsb1.jpg" alt="High Quality Image 1">
+                        <p>Harris</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/anms_vlsb1.jpg" alt="High Quality Image 2">
+                        <p>ANMS</p>
+                    </div>
+                </div>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/harris_vlsb2.jpg" alt="High Quality Image 1">
+                        <p>Harris</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/anms_vlsb2.jpg" alt="High Quality Image 2">
+                        <p>ANMS</p>
+                    </div>
+                </div>
+            <h2>Feature Descriptor Extraction</h2>
+                <p>
+                    To extract features for each point, select a 40x40 window scale down by a factor of 5 for 8x8 patches. Then normalize to have zero mean and variance 1. Each 8x8 patch can be flattneed into a vector for a feature descriptor.
+                </p>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/rsf1_features.png" alt="High Quality Image 1">
+                        <p>RSF 1 Features</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/rsf2_features.png" alt="High Quality Image 2">
+                        <p>RSF 2 Features</p>
+                    </div>
+                </div>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/vlsb1_features.png" alt="High Quality Image 1">
+                        <p>VLSB 1 Features</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/vlsb2_features.png" alt="High Quality Image 2">
+                        <p>VLSB 2 Features</p>
+                    </div>
+                </div>
+            <h2>Automatic Feature Matching</h2>
+                <p>
+                    With the help of the provided dist function and using nearest neighbors, we try to match correspondences. Using Lowe's trick, outliers can be reduced by thresholding on the ratio between the nearest and second nearest neighbors, as good matches should correspond to having a very close nearest neighbor relative to all other neighbors.
+                </p>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/rsf_matching_0.5.png" alt="High Quality Image 1">
+                        <p>t = 0.5</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/vlsb_matching_0.6.png" alt="High Quality Image 2">
+                        <p>t = 0.6</p>
+                    </div>
+                </div>
+            <h2>RANSAC</h2>
+                <p>
+                    In order to best handle outliers, RANSAC can be used, which randomly samples 4 pairs of points and computes the exact homography. The inliers are computed, and after all iterations we store the largest set of inliers, and work backwards using least-squares to find the associated homography.
+                </p>
+                <p>
+                    Inliers are given by blue, outliers that are not used are shown in red
+                </p>
+                <div class="image-grid">
+                    <div class="image-card">
+                        <img src="./media/rsf_ransac_matches.png" alt="Low Quality Image 1">
+                        <p>RSF RANSAC Matches</p>
+                    </div>
+                    <div class="image-card">
+                        <img src="./media/wall_ransac_matches.png" alt="Low Quality Image 2">
+                        <p>Wall RANSAC Matches</p>
+                    </div>
+                    <div class="image-card">
+                        <img src="./media/vlsb_ransac_matches.png" alt="Low Quality Image 3">
+                        <p>VLSB RANSAC Matches</p>
+                    </div>
+                </div>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/rsf_mosaic.jpg" alt="High Quality Image 1">
+                        <p>Manual Selection Mosaic</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/rsf_ransac.png" alt="High Quality Image 2">
+                        <p>RANSAC</p>
+                    </div>
+                </div>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/vlsb_mosaic.jpg" alt="High Quality Image 1">
+                        <p>Manual Selection Mosaic</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/vlsb_ransac.png" alt="High Quality Image 2">
+                        <p>RANSAC</p>
+                    </div>
+                </div>
+                <div class="doubleimage-grid">
+                    <div class="doubleimage-card">
+                        <img src="./media/wall_mosaic.jpg" alt="High Quality Image 1">
+                        <p>Manual Selection Mosaic</p>
+                    </div>
+                    <div class="doubleimage-card">
+                        <img src="./media/wall_ransasc.png" alt="High Quality Image 2">
+                        <p>RANSAC</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
