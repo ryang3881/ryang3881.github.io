@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Results</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Project 5 Results</h1>
+
+        <!-- Part1 Section -->
+        <div class="text-section">
+            <h2>Part A: The Power of Diffusion Models!</h2>
+            <h3>Part 0: Setup</h3>
+            <p>
+                For these and all following results, I use a seed of 180. I noticed that the results, while not the highest quality of images, tended to match the text prompts well. I didn't notice a massive difference in quality of output when running with 10 versus 20 inference steps.
+            </p>
+            <div class="singleimage-center">
+                <img src="./media/part0_20_samples.png" alt="Centered Image">
+                <p>Inference Step = 20</p>
+            </div>
+            <div class="singleimage-center">
+                <img src="./media/part0_10samples.png" alt="Unconditioned Training Losses">
+                <p>Inference Step = 10</p>
+            </div>
+            <h3>Part 1: Sampling Loops</h3>
+            <h3>1.1 Implementing the Forward Process</h3>
+            <div class="singleimage-center">
+                <img src="./media/Part_1.1_noise.png" alt="Centered Image">
+                <p>Campanile with Noise at Different Timesteps</p>
+            </div>
+            <h3>1.2 Classical Denoising</h3>
+            <div class="singleimage-center">
+                <img src="./media/Part_1.2.png" alt="Centered Image">
+                <p>Noisy and Gaussian-Denoised Side by Side</p>
+            </div>
+            <h3>1.3 One-Step Denoising</h3>
+            <div class="image-grid">
+                <div class="image-card">
+                    <img src="./media/Part_1.3_250.png" alt="Low Quality Image 1">
+                    <p>Original, Noisy, One-Step Denoised<br>
+                    Timestep 250</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/Part_1.3_500.png" alt="Low Quality Image 2">
+                    <p>Original, Noisy, One-Step Denoised<br>
+                    Timestep 500</p>
+                </div>
+                <div class="image-card">
+                    <img src="./media/Part_1.3_750.png" alt="Low Quality Image 3">
+                    <p>Original, Noisy, One-Step Denoised<br>
+                    Timestep 750</p>
+                </div>
+            </div>
+            <h3>1.4 Iterative Denoising</h3>
+            <div class="singleimage-center">
+                <img src="./media/Part_1.4_IterativeSteps.png" alt="Centered Image">
+                <p>Iterative Steps</p>
+            </div>
+            <div class="singleimage-center">
+                <img src="./media/Part_1.4_results.png" alt="Centered Image">
+                <p>Original, Iteratively Denoised, One-Step Denoised, Gaussian Blurred</p>
+            </div>
+            <h3>1.5 Diffusion Model Sampling</h3>
+            <div class="singleimage-center">
+                <img src="./media/Part_1.5.png" alt="Centered Image">
+                <p>5 Sampled Images</p>
+            </div>
+            <h3>1.6 Classifier-Free Guidance (CFG)</h3>
+            <div class="singleimage-center">
+                <img src="./media/Part_1.6.png" alt="Centered Image">
+                <p>5 CFG Sampled Images</p>
+            </div>
+            <h3>1.7 Image to Image Translation</h3>
+            <div class="singleimage-center">
+                <img src="./media/Part_1.7_Campanile_Translation.png" alt="Centered Image">
+                <p>Starting with Prompt "a high quality photo" to Campanile test image</p>
+            </div>
+            <div class="singleimage-center">
+                <img src="./media/Part1.7_GoldenGate.png" alt="Centered Image">
+                <p>Starting with Prompt "a high quality photo" to Golden Gate test image</p>
+            </div>
+            <div class="singleimage-center">
+                <img src="./media/Part1.7_Macbook.png" alt="Centered Image">
+                <p>Starting with Prompt "a high quality photo" to Macbook test image</p>
+            </div>
+            <h3>1.7.1 Handdrawn and Web Images</h3>
+            <div class="images-container">
+                <div class="singleimage larger-image">
+                    <img src="./media/Part_1.7_web_translation.png" alt="Larger Image">
+                    <p>Starting with Prompt "a high quality photo" to Lebron Test Image</p>
+                </div>
+                <div class="singleimage smaller-image">
+                    <img src="./media/Part_1.7_web_img_og.png" alt="Smaller Image">
+                    <p>Original Lebron Test Image</p>
+                </div>
+            </div>
+            <div class="images-container">
+                <div class="singleimage larger-image">
+                    <img src="./media/Part_1.7_drawing1_translation.png" alt="Larger Image">
+                    <p>Starting with Prompt "a high quality photo" to Handrawn House Test Image</p>
+                </div>
+                <div class="singleimage smaller-image">
+                    <img src="./media/Part_1.7_drawing1.png" alt="Smaller Image">
+                    <p>Original Handdrawn House Test Image</p>
+                </div>
+            </div>
+            <h3>1.7.2 Inpainting</h3>
+            <div class="images-container">
+                <div class="singleimage larger-image">
+                    <img src="./media/inpaint_test_img_before.png" alt="Larger Image">
+                    <p>Original, Mask, To Replace</p>
+                </div>
+                <div class="singleimage smaller-image">
+                    <img src="./media/inpaint_test_img_result.png" alt="Smaller Image">
+                    <p>Inpainted Campanile</p>
+                </div>
+            </div>
+            <h3>1.7.3 Text-Conditional Image-to-image Translation</h3>
+            <div class="singleimage-center">
+                <img src="./media/Part_1.7.3.png" alt="Centered Image">
+                <p>"a rocket ship" to Campanile<br>
+                    "a photo of a man" to Lebron<br>
+                    "an oil painting of a snowy mountain village" to Handdrawn House</p>
+            </div>
+            <h3>1.8 Visual Anagrams</h3>
+            <div class="doubleimage-grid">
+                <div class="doubleimage-card">
+                    <img src="./media/old_man.jpg" alt="High Quality Image 1">
+                    <p>An Oil Painting of an Old Man</p>
+                </div>
+                <div class="doubleimage-card">
+                    <img src="./media/campfire.jpeg" alt="High Quality Image 2">
+                    <p>An Oil Painting of People around a Campfire</p>
+                </div>
+            </div>
+            <div class="doubleimage-grid">
+                <div class="doubleimage-card">
+                    <img src="./media/amalfi_coast.png" alt="High Quality Image 1">
+                    <p>Amalfi Coast</p>
+                </div>
+                <div class="doubleimage-card">
+                    <img src="./media/bartender.jpg" alt="High Quality Image 2">
+                    <p>Hipster Bartender</p>
+                </div>
+            </div>
+            <div class="doubleimage-grid">
+                <div class="doubleimage-card">
+                    <img src="./media/waterfall.png" alt="High Quality Image 1">
+                    <p>Waterfall</p>
+                </div>
+                <div class="doubleimage-card">
+                    <img src="./media/snowy_village.jpg" alt="High Quality Image 2">
+                    <p>Snowy Mountain Village</p>
+                </div>
+            </div>
+            <h3>1.9 Hybrid Images</h3>
+            <div class="doubleimage-grid">
+                <div class="doubleimage-card">
+                    <img src="./media/skull_waterfall.jpeg" alt="High Quality Image 1">
+                    <p>Hybrid Image of a skull and a waterfall</p>
+                </div>
+                <div class="doubleimage-card">
+                    <img src="./media/skull_waterfall2.jpeg" alt="High Quality Image 2">
+                    <p>Hybrid Image of a skull and a waterfall</p>
+                </div>
+            </div>
+            <div class="doubleimage-grid">
+                <div class="doubleimage-card">
+                    <img src="./media/batman_bats_hybrid.png" alt="High Quality Image 1">
+                    <p>Hybrid Image of "a lithogram of Batman's face" and "a lithograph of a scene of bats flying", seed=180</p>
+                </div>
+                <div class="doubleimage-card">
+                    <img src="./media/thanos_flowers_hybrid_seed7.png" alt="High Quality Image 2">
+                    <p>Hybrid Image of "a lithogram of Thanos's face" and "a lithogram of three purple flowers", seed=7</p>
+                </div>
+            </div>
+
+
+            
+
+
+           
+            <h2>Part B: Diffusion Models from Scratch!</h2>
+            <h3>Part 1: Training a Single-Step Denoising UNet</h2>
+            <h3>Unconditioned UNet</h3>    
+            <div class="singleimage-center">
+                <img src="./media/noises.png" alt="Centered Image">
+                <p>Denoising</p>
+            </div>
+            <div class="singleimage-center">
+                <img src="./media/unconditioned_training_curve.png" alt="Unconditioned Training Losses">
+                <p>Unconditioned Training Losses</p>
+            </div>
+            <div class="singleimage-center">
+                <img src="./media/epoch1_denoised.png" alt="Unconditioned Training Losses">
+                <p>Denoised Results on Digits from Test set after 1 Epoch</p>
+            </div>
+            <div class="singleimage-center">
+                <img src="./media/epoch5_denoised.png" alt="Unconditioned Training Losses">
+                <p>Denoised Results on Digits from Test set after 5 Epochs</p>
+            </div>
+            <div class="singleimage-center">
+                <img src="./media/noises.png" alt="Centered Image">
+                <p>Out of Distribution Testing</p>
+            </div>
+
+            <h3>Time-Conditioned UNet</h3>    
+            <div class="singleimage-center">
+                <img src="./media/time_conditioned_losses.png" alt="Unconditioned Training Losses">
+                <p>Time-Conditioned Training Losses</p>
+            </div>
+            <div class="singleimage-center">
+                <img src="./media/epoch5_time_conditioned.png" alt="Unconditioned Training Losses">
+                <p>Sampling results for Time-Conditioned after 5 Epochs</p>
+            </div>
+            <div class="singleimage-center">
+                <img src="./media/epoch20_time_conditioned.png" alt="Unconditioned Training Losses">
+                <p>Sampling results for Time-Conditioned after 20 Epochs</p>
+            </div>
+            <h3>Class-Conditioned UNet</h3>    
+            <div class="singleimage-center">
+                <img src="./media/class_conditioned_losses.png" alt="Unconditioned Training Losses">
+                <p>Class-Conditioned Training Losses</p>
+            </div>
+            <div class="singleimage-center">
+                <img src="./media/class_conditioned_5epoch.png" alt="Unconditioned Training Losses">
+                <p>Sampling results for Class-Conditioned after 5 Epochs</p>
+            </div>
+            <div class="singleimage-center">
+                <img src="./media/class_conditioned_20epoch.png" alt="Unconditioned Training Losses">
+                <p>Sampling results for Class-Conditioned after 20 Epochs</p>
+            </div>
+
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
